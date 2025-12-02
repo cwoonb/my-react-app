@@ -72,3 +72,24 @@ export default defineConfig([
 ])
 ```
 # my-react-app
+
+
+
+# 실행 방법
+
+## 경로
+1) 
+cd /Users/woonbaecho/Desktop/pages/my-react-app
+
+2) 
+npm run dev
+
+
+# 배포 방법
+1) 터미널 열고 프로젝트 폴더로 이동
+cd /Users/woonbaecho/Desktop/pages/my-react-app
+
+2) GitHub에 push
+git add .
+git commit -m "update"
+git push
