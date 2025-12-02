@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { shortsData } from "../data/shortsData";
-import type { ShortsItem } from "../types";
 
 const defaultKeywords = [
   "강아지",
@@ -36,7 +35,7 @@ export const Shorts = () => {
     
     if (savedKeywords) {
       try {
-        const keywords = new Set(JSON.parse(savedKeywords));
+        const keywords = new Set<string>(JSON.parse(savedKeywords));
         setSelectedKeywords(keywords);
         setTempSelectedKeywords(keywords);
       } catch (error) {
@@ -62,8 +61,6 @@ export const Shorts = () => {
       shorts.keywords.some((keyword) => selectedKeywords.has(keyword))
     );
   }, [selectedKeywords]);
-
-  const currentShorts = filteredShorts[currentIndex];
 
   // 모달 열 때 현재 선택된 키워드를 임시 선택으로 복사
   const handleOpenModal = () => {
@@ -134,7 +131,7 @@ export const Shorts = () => {
     if (!container) return;
 
     let isScrolling = false;
-    let scrollTimeout: NodeJS.Timeout;
+    let scrollTimeout: ReturnType<typeof setTimeout>;
 
     const handleScroll = () => {
       if (isScrolling) return;
@@ -177,8 +174,6 @@ export const Shorts = () => {
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
   };
-
-  const allKeywords = [...defaultKeywords, ...customKeywords];
 
   return (
     <div style={{ position: "relative", height: "calc(100vh - 60px)" }}>
