@@ -117,9 +117,28 @@ export const Shorts = () => {
   useEffect(() => {
     const currentVideo = videoRefs.current[currentIndex];
     if (currentVideo) {
-      if (isPlaying) {
-        currentVideo.play().catch(console.error);
-      } else {
+      // 이전 비디오 일시정지
+      videoRefs.current.forEach((video, idx) => {
+        if (video && idx !== currentIndex) {
+          video.pause();
+        }
+      });
+
+      // 현재 비디오 재생 시도
+      if (isPlaying && currentVideo) {
+        const playPromise = currentVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              // 재생 성공
+            })
+            .catch((error) => {
+              // 모바일에서 자동재생이 차단된 경우
+              console.log("자동재생 실패:", error);
+              setIsPlaying(false);
+            });
+        }
+      } else if (currentVideo) {
         currentVideo.pause();
       }
     }
@@ -172,7 +191,32 @@ export const Shorts = () => {
 
   // 재생/일시정지 토글
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    const currentVideo = videoRefs.current[currentIndex];
+    if (currentVideo) {
+      if (isPlaying) {
+        currentVideo.pause();
+        setIsPlaying(false);
+      } else {
+        // 모바일에서 음소거 해제 후 재생
+        currentVideo.muted = false;
+        currentVideo.play()
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((error) => {
+            console.log("재생 실패:", error);
+            // 재생 실패 시 음소거로 재시도
+            currentVideo.muted = true;
+            currentVideo.play()
+              .then(() => {
+                setIsPlaying(true);
+              })
+              .catch(() => {
+                setIsPlaying(false);
+              });
+          });
+      }
+    }
   };
 
   return (
@@ -550,9 +594,28 @@ export const Shorts = () => {
                   objectFit: "contain",
                 }}
                 loop
-                muted={false}
+                muted={index !== currentIndex}
                 playsInline
+                webkit-playsinline="true"
+                x5-playsinline="true"
+                preload="metadata"
                 onClick={togglePlay}
+                onTouchStart={(e) => {
+                  // 모바일 터치 이벤트
+                  e.preventDefault();
+                  togglePlay();
+                }}
+                onLoadedMetadata={() => {
+                  // 비디오 메타데이터 로드 완료 시
+                  if (index === currentIndex && isPlaying) {
+                    const video = videoRefs.current[index];
+                    if (video) {
+                      video.play().catch(() => {
+                        setIsPlaying(false);
+                      });
+                    }
+                  }
+                }}
               />
 
               {/* 오버레이 정보 */}
@@ -734,14 +797,21 @@ export const Shorts = () => {
                     width: "80px",
                     height: "80px",
                     borderRadius: "50%",
-                    background: "rgba(0,0,0,0.6)",
+                    background: "rgba(0,0,0,0.7)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     fontSize: "40px",
                     cursor: "pointer",
+                    zIndex: 10,
+                    touchAction: "manipulation",
                   }}
                   onClick={togglePlay}
+                  onTouchEnd={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    togglePlay();
+                  }}
                 >
                   ▶️
                 </div>
