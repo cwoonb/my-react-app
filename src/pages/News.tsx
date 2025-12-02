@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { newsData } from "../data/newsData";
-import type { NewsItem, NewsCategory } from "../types";
+import type { NewsCategory } from "../types";
 
 export const News = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
