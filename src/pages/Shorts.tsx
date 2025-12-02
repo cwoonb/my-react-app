@@ -568,55 +568,91 @@ export const Shorts = () => {
             background: "#000",
           }}
         >
-          {filteredShorts.map((shorts, index) => (
-            <div
-              key={shorts.id}
-              style={{
-                height: "calc(100vh - 60px)",
-                scrollSnapAlign: "start",
-                position: "relative",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                background: "#000",
-              }}
-            >
-              {/* 비디오 */}
-              <video
-                ref={(el) => {
-                  videoRefs.current[index] = el;
-                }}
-                src={shorts.videoUrl}
-                poster={shorts.thumbnail}
+          {filteredShorts.map((shorts, index) => {
+            // 현재 보이는 비디오와 앞뒤 2개만 실제 로드 (지연 로딩)
+            const shouldLoad = Math.abs(index - currentIndex) <= 2;
+            const isCurrent = index === currentIndex;
+            
+            return (
+              <div
+                key={shorts.id}
                 style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "contain",
+                  height: "calc(100vh - 60px)",
+                  scrollSnapAlign: "start",
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#000",
                 }}
-                loop
-                muted={index !== currentIndex}
-                playsInline
-                webkit-playsinline="true"
-                x5-playsinline="true"
-                preload="metadata"
-                onClick={togglePlay}
-                onTouchStart={(e) => {
-                  // 모바일 터치 이벤트
-                  e.preventDefault();
-                  togglePlay();
-                }}
-                onLoadedMetadata={() => {
-                  // 비디오 메타데이터 로드 완료 시
-                  if (index === currentIndex && isPlaying) {
-                    const video = videoRefs.current[index];
-                    if (video) {
-                      video.play().catch(() => {
-                        setIsPlaying(false);
-                      });
-                    }
-                  }
-                }}
-              />
+              >
+                {/* 비디오 */}
+                {shouldLoad ? (
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[index] = el;
+                    }}
+                    src={shorts.videoUrl}
+                    poster={shorts.thumbnail}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                    }}
+                    loop
+                    muted={!isCurrent}
+                    playsInline
+                    webkit-playsinline="true"
+                    x5-playsinline="true"
+                    preload={isCurrent ? "auto" : "metadata"}
+                    onClick={togglePlay}
+                    onTouchStart={(e) => {
+                      // 모바일 터치 이벤트
+                      e.preventDefault();
+                      togglePlay();
+                    }}
+                    onLoadedMetadata={() => {
+                      // 비디오 메타데이터 로드 완료 시
+                      if (isCurrent && isPlaying) {
+                        const video = videoRefs.current[index];
+                        if (video) {
+                          video.play().catch(() => {
+                            setIsPlaying(false);
+                          });
+                        }
+                      }
+                    }}
+                  />
+                ) : (
+                  // 로드하지 않는 비디오는 썸네일만 표시
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      backgroundImage: `url(${shorts.thumbnail})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "50%",
+                        background: "rgba(0,0,0,0.6)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "30px",
+                      }}
+                    >
+                      ▶️
+                    </div>
+                  </div>
+                )}
 
               {/* 오버레이 정보 */}
               <div
@@ -816,8 +852,9 @@ export const Shorts = () => {
                   ▶️
                 </div>
               )}
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
