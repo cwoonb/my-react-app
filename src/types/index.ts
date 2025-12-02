@@ -32,3 +32,19 @@ export interface ChatMessage {
   timestamp: string;
   isFromMe: boolean;
 }
+
+// 숏츠 관련 타입
+export interface ShortsItem {
+  id: string;
+  title: string;
+  description: string;
+  videoUrl: string;
+  thumbnail: string;
+  author: string;
+  authorAvatar: string;
+  likes: number;
+  views: number;
+  comments: number;
+  duration: string;
+  keywords: string[];
+}

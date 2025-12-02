@@ -7,6 +7,7 @@ export const Navigation = () => {
     { path: "/", label: "홈", icon: "🏠" },
     { path: "/news", label: "뉴스", icon: "📰" },
     { path: "/chat", label: "채팅", icon: "💬" },
+    { path: "/shorts", label: "숏츠", icon: "🎬" },
   ];
 
   return (

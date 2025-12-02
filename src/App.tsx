@@ -3,6 +3,7 @@ import { Navigation } from "./components/Navigation";
 import { Home } from "./pages/Home";
 import { News } from "./pages/News";
 import { Chat } from "./pages/Chat";
+import { Shorts } from "./pages/Shorts";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/news" element={<News />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/shorts" element={<Shorts />} />
         </Routes>
       </div>
     </Router>

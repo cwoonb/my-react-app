@@ -159,6 +159,64 @@ export const Home = () => {
             </p>
           </div>
         </Link>
+
+        {/* 숏츠 카드 */}
+        <Link
+          to="/shorts"
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+          }}
+        >
+          <div
+            style={{
+              background: "white",
+              borderRadius: "16px",
+              padding: "30px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              transition: "transform 0.3s, box-shadow 0.3s",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-5px)";
+              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 4px 12px rgba(0,0,0,0.1)";
+            }}
+          >
+            <div
+              style={{
+                fontSize: "48px",
+                marginBottom: "20px",
+                textAlign: "center",
+              }}
+            >
+              🎬
+            </div>
+            <h2
+              style={{
+                fontSize: "24px",
+                marginBottom: "15px",
+                color: "#333",
+                textAlign: "center",
+              }}
+            >
+              숏츠
+            </h2>
+            <p
+              style={{
+                fontSize: "16px",
+                color: "#666",
+                lineHeight: "1.6",
+                textAlign: "center",
+              }}
+            >
+              짧은 동영상을 세로로 스크롤하며 감상하세요
+            </p>
+          </div>
+        </Link>
       </div>
     </div>
   );
