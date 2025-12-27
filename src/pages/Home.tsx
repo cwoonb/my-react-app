@@ -12,13 +12,13 @@ export const Home = () => {
       <div
         style={{
           textAlign: "center",
-          marginBottom: "60px",
+          marginBottom: "40px",
         }}
       >
         <h1
           style={{
-            fontSize: "48px",
-            marginBottom: "20px",
+            fontSize: "clamp(28px, 5vw, 48px)",
+            marginBottom: "16px",
             color: "#333",
             fontWeight: "bold",
           }}
@@ -27,9 +27,10 @@ export const Home = () => {
         </h1>
         <p
           style={{
-            fontSize: "20px",
+            fontSize: "clamp(16px, 3vw, 20px)",
             color: "#666",
             lineHeight: "1.6",
+            padding: "0 16px",
           }}
         >
           다양한 기능을 탐색해보세요
@@ -39,8 +40,8 @@ export const Home = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "30px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))",
+          gap: "20px",
           marginTop: "40px",
         }}
       >
@@ -56,14 +57,16 @@ export const Home = () => {
             style={{
               background: "white",
               borderRadius: "16px",
-              padding: "30px",
+              padding: "clamp(20px, 4vw, 30px)",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               transition: "transform 0.3s, box-shadow 0.3s",
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              if (!isMobile) {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              }
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
@@ -72,8 +75,8 @@ export const Home = () => {
           >
             <div
               style={{
-                fontSize: "48px",
-                marginBottom: "20px",
+                fontSize: "clamp(36px, 8vw, 48px)",
+                marginBottom: "16px",
                 textAlign: "center",
               }}
             >
@@ -81,8 +84,8 @@ export const Home = () => {
             </div>
             <h2
               style={{
-                fontSize: "24px",
-                marginBottom: "15px",
+                fontSize: "clamp(20px, 4vw, 24px)",
+                marginBottom: "12px",
                 color: "#333",
                 textAlign: "center",
               }}
@@ -91,7 +94,7 @@ export const Home = () => {
             </h2>
             <p
               style={{
-                fontSize: "16px",
+                fontSize: "clamp(14px, 3vw, 16px)",
                 color: "#666",
                 lineHeight: "1.6",
                 textAlign: "center",
@@ -114,14 +117,16 @@ export const Home = () => {
             style={{
               background: "white",
               borderRadius: "16px",
-              padding: "30px",
+              padding: "clamp(20px, 4vw, 30px)",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               transition: "transform 0.3s, box-shadow 0.3s",
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              if (!isMobile) {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              }
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
@@ -130,8 +135,8 @@ export const Home = () => {
           >
             <div
               style={{
-                fontSize: "48px",
-                marginBottom: "20px",
+                fontSize: "clamp(36px, 8vw, 48px)",
+                marginBottom: "16px",
                 textAlign: "center",
               }}
             >
@@ -139,8 +144,8 @@ export const Home = () => {
             </div>
             <h2
               style={{
-                fontSize: "24px",
-                marginBottom: "15px",
+                fontSize: "clamp(20px, 4vw, 24px)",
+                marginBottom: "12px",
                 color: "#333",
                 textAlign: "center",
               }}
@@ -149,7 +154,7 @@ export const Home = () => {
             </h2>
             <p
               style={{
-                fontSize: "16px",
+                fontSize: "clamp(14px, 3vw, 16px)",
                 color: "#666",
                 lineHeight: "1.6",
                 textAlign: "center",
@@ -172,14 +177,16 @@ export const Home = () => {
             style={{
               background: "white",
               borderRadius: "16px",
-              padding: "30px",
+              padding: "clamp(20px, 4vw, 30px)",
               boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
               transition: "transform 0.3s, box-shadow 0.3s",
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-5px)";
-              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              if (!isMobile) {
+                e.currentTarget.style.transform = "translateY(-5px)";
+                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+              }
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
@@ -188,8 +195,8 @@ export const Home = () => {
           >
             <div
               style={{
-                fontSize: "48px",
-                marginBottom: "20px",
+                fontSize: "clamp(36px, 8vw, 48px)",
+                marginBottom: "16px",
                 textAlign: "center",
               }}
             >
@@ -197,8 +204,8 @@ export const Home = () => {
             </div>
             <h2
               style={{
-                fontSize: "24px",
-                marginBottom: "15px",
+                fontSize: "clamp(20px, 4vw, 24px)",
+                marginBottom: "12px",
                 color: "#333",
                 textAlign: "center",
               }}
@@ -207,7 +214,7 @@ export const Home = () => {
             </h2>
             <p
               style={{
-                fontSize: "16px",
+                fontSize: "clamp(14px, 3vw, 16px)",
                 color: "#666",
                 lineHeight: "1.6",
                 textAlign: "center",

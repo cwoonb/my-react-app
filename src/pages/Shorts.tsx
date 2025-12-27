@@ -25,8 +25,18 @@ export const Shorts = () => {
   const [customKeywords, setCustomKeywords] = useState<string[]>([]);
   const [showKeywordModal, setShowKeywordModal] = useState(false);
   const [newKeyword, setNewKeyword] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // 화면 크기 감지
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // localStorage에서 선택된 키워드와 커스텀 키워드 불러오기
   useEffect(() => {
@@ -220,40 +230,40 @@ export const Shorts = () => {
   };
 
   return (
-    <div style={{ position: "relative", height: "calc(100vh - 60px)" }}>
+    <div style={{ position: "relative", height: isMobile ? "calc(100vh - 100px)" : "calc(100vh - 60px)" }}>
       {/* 키워드 선택 버튼 */}
       <div
         style={{
           position: "absolute",
-          top: "20px",
-          left: "20px",
+          top: isMobile ? "12px" : "20px",
+          left: isMobile ? "12px" : "20px",
           zIndex: 100,
         }}
       >
         <button
           onClick={handleOpenModal}
           style={{
-            padding: "10px 20px",
+            padding: isMobile ? "8px 12px" : "10px 20px",
             background: "rgba(0,0,0,0.7)",
             color: "white",
             border: "none",
             borderRadius: "20px",
             cursor: "pointer",
-            fontSize: "14px",
+            fontSize: isMobile ? "12px" : "14px",
             fontWeight: "bold",
             display: "flex",
             alignItems: "center",
-            gap: "8px",
+            gap: isMobile ? "4px" : "8px",
           }}
         >
-          🏷️ 키워드 선택
+          🏷️ {!isMobile && "키워드 선택"}
           {selectedKeywords.size > 0 && (
             <span
               style={{
                 background: "#646cff",
                 borderRadius: "10px",
-                padding: "2px 8px",
-                fontSize: "12px",
+                padding: "2px 6px",
+                fontSize: isMobile ? "10px" : "12px",
               }}
             >
               {selectedKeywords.size}
@@ -283,9 +293,9 @@ export const Shorts = () => {
           <div
             style={{
               background: "white",
-              borderRadius: "20px",
-              padding: "30px",
-              maxWidth: "600px",
+              borderRadius: isMobile ? "16px" : "20px",
+              padding: isMobile ? "20px" : "30px",
+              maxWidth: isMobile ? "95%" : "600px",
               width: "100%",
               maxHeight: "80vh",
               overflowY: "auto",
@@ -300,7 +310,7 @@ export const Shorts = () => {
                 marginBottom: "20px",
               }}
             >
-              <h2 style={{ margin: 0, fontSize: "24px", color: "#333" }}>
+              <h2 style={{ margin: 0, fontSize: isMobile ? "20px" : "24px", color: "#333" }}>
                 관심 키워드 선택
               </h2>
               <button
@@ -322,14 +332,14 @@ export const Shorts = () => {
 
             {/* 기본 키워드 */}
             <div style={{ marginBottom: "30px" }}>
-              <h3 style={{ marginBottom: "15px", fontSize: "18px", color: "#333" }}>
+              <h3 style={{ marginBottom: "15px", fontSize: isMobile ? "16px" : "18px", color: "#333" }}>
                 기본 키워드
               </h3>
               <div
                 style={{
                   display: "flex",
                   flexWrap: "wrap",
-                  gap: "10px",
+                  gap: isMobile ? "6px" : "10px",
                 }}
               >
                 {defaultKeywords.map((keyword) => (
@@ -337,14 +347,14 @@ export const Shorts = () => {
                     key={keyword}
                     onClick={() => toggleKeyword(keyword)}
                     style={{
-                      padding: "10px 20px",
+                      padding: isMobile ? "8px 14px" : "10px 20px",
                       borderRadius: "20px",
                       border: "2px solid",
                       borderColor: tempSelectedKeywords.has(keyword) ? "#646cff" : "#ddd",
                       background: tempSelectedKeywords.has(keyword) ? "#646cff" : "white",
                       color: tempSelectedKeywords.has(keyword) ? "white" : "#333",
                       cursor: "pointer",
-                      fontSize: "14px",
+                      fontSize: isMobile ? "12px" : "14px",
                       fontWeight: tempSelectedKeywords.has(keyword) ? "bold" : "normal",
                       transition: "all 0.2s",
                     }}
@@ -357,7 +367,7 @@ export const Shorts = () => {
 
             {/* 커스텀 키워드 */}
             <div style={{ marginBottom: "30px" }}>
-              <h3 style={{ marginBottom: "15px", fontSize: "18px", color: "#333" }}>
+              <h3 style={{ marginBottom: "15px", fontSize: isMobile ? "16px" : "18px", color: "#333" }}>
                 내가 추가한 키워드 ({customKeywords.length}/5)
               </h3>
               {customKeywords.length > 0 && (
@@ -526,7 +536,7 @@ export const Shorts = () => {
       {filteredShorts.length === 0 ? (
         <div
           style={{
-            height: "calc(100vh - 60px)",
+            height: isMobile ? "calc(100vh - 100px)" : "calc(100vh - 60px)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -534,23 +544,24 @@ export const Shorts = () => {
             color: "white",
             flexDirection: "column",
             gap: "20px",
+            padding: isMobile ? "20px" : "0",
           }}
         >
-          <div style={{ fontSize: "48px" }}>🔍</div>
-          <div style={{ fontSize: "20px" }}>선택한 키워드에 해당하는 숏츠가 없습니다</div>
+          <div style={{ fontSize: isMobile ? "36px" : "48px" }}>🔍</div>
+          <div style={{ fontSize: isMobile ? "16px" : "20px", textAlign: "center" }}>선택한 키워드에 해당하는 숏츠가 없습니다</div>
           <button
             onClick={() => {
               setSelectedKeywords(new Set());
               localStorage.setItem("selectedKeywords", JSON.stringify([]));
             }}
             style={{
-              padding: "12px 24px",
+              padding: isMobile ? "10px 20px" : "12px 24px",
               borderRadius: "20px",
               border: "none",
               background: "#646cff",
               color: "white",
               cursor: "pointer",
-              fontSize: "16px",
+              fontSize: isMobile ? "14px" : "16px",
               fontWeight: "bold",
             }}
           >
@@ -561,7 +572,7 @@ export const Shorts = () => {
         <div
           ref={containerRef}
           style={{
-            height: "calc(100vh - 60px)",
+            height: isMobile ? "calc(100vh - 100px)" : "calc(100vh - 60px)",
             overflowY: "scroll",
             scrollSnapType: "y mandatory",
             scrollBehavior: "smooth",
@@ -577,7 +588,7 @@ export const Shorts = () => {
               <div
                 key={shorts.id}
                 style={{
-                  height: "calc(100vh - 60px)",
+                  height: isMobile ? "calc(100vh - 100px)" : "calc(100vh - 60px)",
                   scrollSnapAlign: "start",
                   position: "relative",
                   display: "flex",
@@ -662,19 +673,20 @@ export const Shorts = () => {
                   left: 0,
                   right: 0,
                   background: "linear-gradient(to top, rgba(0,0,0,0.8), transparent)",
-                  padding: "20px",
+                  padding: isMobile ? "12px" : "20px",
                   color: "white",
                   display: "flex",
+                  flexDirection: isMobile ? "column" : "row",
                   justifyContent: "space-between",
                 }}
               >
                 {/* 왼쪽: 작성자 정보 */}
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, marginBottom: isMobile ? "12px" : "0" }}>
                   <div
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "12px",
+                      gap: isMobile ? "8px" : "12px",
                       marginBottom: "8px",
                     }}
                   >
@@ -682,39 +694,39 @@ export const Shorts = () => {
                       src={shorts.authorAvatar}
                       alt={shorts.author}
                       style={{
-                        width: "40px",
-                        height: "40px",
+                        width: isMobile ? "32px" : "40px",
+                        height: isMobile ? "32px" : "40px",
                         borderRadius: "50%",
                         objectFit: "cover",
                       }}
                     />
                     <div>
-                      <div style={{ fontWeight: "bold", fontSize: "16px" }}>
+                      <div style={{ fontWeight: "bold", fontSize: isMobile ? "14px" : "16px" }}>
                         {shorts.author}
                       </div>
-                      <div style={{ fontSize: "14px", opacity: 0.8 }}>
+                      <div style={{ fontSize: isMobile ? "12px" : "14px", opacity: 0.8 }}>
                         {shorts.views.toLocaleString()}회 조회
                       </div>
                     </div>
                   </div>
-                  <h3 style={{ margin: "8px 0", fontSize: "18px", fontWeight: "bold" }}>
+                  <h3 style={{ margin: "8px 0", fontSize: isMobile ? "16px" : "18px", fontWeight: "bold" }}>
                     {shorts.title}
                   </h3>
-                  <p style={{ margin: "4px 0 8px 0", fontSize: "14px", opacity: 0.9 }}>
+                  <p style={{ margin: "4px 0 8px 0", fontSize: isMobile ? "12px" : "14px", opacity: 0.9 }}>
                     {shorts.description}
                   </p>
                   {/* 키워드 태그 */}
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: isMobile ? "4px" : "6px" }}>
                     {shorts.keywords.map((keyword) => (
                       <span
                         key={keyword}
                         style={{
-                          padding: "4px 10px",
+                          padding: isMobile ? "3px 8px" : "4px 10px",
                           borderRadius: "12px",
                           background: selectedKeywords.has(keyword)
                             ? "rgba(100, 108, 255, 0.8)"
                             : "rgba(255,255,255,0.2)",
-                          fontSize: "12px",
+                          fontSize: isMobile ? "10px" : "12px",
                           border: selectedKeywords.has(keyword) ? "1px solid #646cff" : "none",
                         }}
                       >
@@ -728,10 +740,11 @@ export const Shorts = () => {
                 <div
                   style={{
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: isMobile ? "row" : "column",
                     alignItems: "center",
-                    gap: "20px",
-                    marginLeft: "20px",
+                    gap: isMobile ? "16px" : "20px",
+                    marginLeft: isMobile ? "0" : "20px",
+                    justifyContent: isMobile ? "center" : "flex-start",
                   }}
                 >
                   {/* 좋아요 */}
@@ -746,23 +759,25 @@ export const Shorts = () => {
                   >
                     <div
                       style={{
-                        width: "50px",
-                        height: "50px",
+                        width: isMobile ? "44px" : "50px",
+                        height: isMobile ? "44px" : "50px",
                         borderRadius: "50%",
                         background: liked.has(shorts.id) ? "#ff3040" : "rgba(255,255,255,0.2)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "24px",
-                        marginBottom: "4px",
+                        fontSize: isMobile ? "20px" : "24px",
+                        marginBottom: isMobile ? "0" : "4px",
                         transition: "all 0.2s",
                       }}
                     >
                       {liked.has(shorts.id) ? "❤️" : "🤍"}
                     </div>
-                    <span style={{ fontSize: "12px" }}>
-                      {(shorts.likes + (liked.has(shorts.id) ? 1 : 0)).toLocaleString()}
-                    </span>
+                    {!isMobile && (
+                      <span style={{ fontSize: "12px" }}>
+                        {(shorts.likes + (liked.has(shorts.id) ? 1 : 0)).toLocaleString()}
+                      </span>
+                    )}
                   </div>
 
                   {/* 댓글 */}
@@ -776,22 +791,24 @@ export const Shorts = () => {
                   >
                     <div
                       style={{
-                        width: "50px",
-                        height: "50px",
+                        width: isMobile ? "44px" : "50px",
+                        height: isMobile ? "44px" : "50px",
                         borderRadius: "50%",
                         background: "rgba(255,255,255,0.2)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "24px",
-                        marginBottom: "4px",
+                        fontSize: isMobile ? "20px" : "24px",
+                        marginBottom: isMobile ? "0" : "4px",
                       }}
                     >
                       💬
                     </div>
-                    <span style={{ fontSize: "12px" }}>
-                      {shorts.comments.toLocaleString()}
-                    </span>
+                    {!isMobile && (
+                      <span style={{ fontSize: "12px" }}>
+                        {shorts.comments.toLocaleString()}
+                      </span>
+                    )}
                   </div>
 
                   {/* 공유 */}
@@ -805,15 +822,15 @@ export const Shorts = () => {
                   >
                     <div
                       style={{
-                        width: "50px",
-                        height: "50px",
+                        width: isMobile ? "44px" : "50px",
+                        height: isMobile ? "44px" : "50px",
                         borderRadius: "50%",
                         background: "rgba(255,255,255,0.2)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        fontSize: "24px",
-                        marginBottom: "4px",
+                        fontSize: isMobile ? "20px" : "24px",
+                        marginBottom: isMobile ? "0" : "4px",
                       }}
                     >
                       📤
@@ -830,14 +847,14 @@ export const Shorts = () => {
                     top: "50%",
                     left: "50%",
                     transform: "translate(-50%, -50%)",
-                    width: "80px",
-                    height: "80px",
+                    width: isMobile ? "64px" : "80px",
+                    height: isMobile ? "64px" : "80px",
                     borderRadius: "50%",
                     background: "rgba(0,0,0,0.7)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "40px",
+                    fontSize: isMobile ? "32px" : "40px",
                     cursor: "pointer",
                     zIndex: 10,
                     touchAction: "manipulation",

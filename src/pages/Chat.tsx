@@ -89,11 +89,23 @@ export const Chat = () => {
     }
   };
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <div
       style={{
         display: "flex",
-        height: "calc(100vh - 80px)",
+        flexDirection: isMobile ? "column" : "row",
+        height: isMobile ? "auto" : "calc(100vh - 80px)",
+        minHeight: isMobile ? "calc(100vh - 80px)" : "auto",
         maxWidth: "1400px",
         margin: "0 auto",
       }}
@@ -107,14 +119,15 @@ export const Chat = () => {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            padding: "40px",
+            padding: isMobile ? "20px 16px" : "40px",
+            minHeight: isMobile ? "calc(100vh - 140px)" : "auto",
           }}
         >
           {currentProfile && (
             <div
               style={{
                 width: "100%",
-                maxWidth: "400px",
+                maxWidth: isMobile ? "100%" : "400px",
                 background: "white",
                 borderRadius: "20px",
                 overflow: "hidden",
@@ -126,7 +139,8 @@ export const Chat = () => {
               <div
                 style={{
                   width: "100%",
-                  height: "500px",
+                  height: isMobile ? "60vh" : "500px",
+                  minHeight: isMobile ? "400px" : "500px",
                   background: `linear-gradient(135deg, #667eea 0%, #764ba2 100%)`,
                   position: "relative",
                   overflow: "hidden",
@@ -152,21 +166,21 @@ export const Chat = () => {
                     color: "white",
                   }}
                 >
-                  <h2 style={{ fontSize: "32px", margin: "0 0 8px 0" }}>
+                  <h2 style={{ fontSize: isMobile ? "24px" : "32px", margin: "0 0 8px 0" }}>
                     {currentProfile.name}, {currentProfile.age}
                   </h2>
-                  <p style={{ fontSize: "16px", margin: "0 0 16px 0", lineHeight: "1.5" }}>
+                  <p style={{ fontSize: isMobile ? "14px" : "16px", margin: "0 0 16px 0", lineHeight: "1.5" }}>
                     {currentProfile.bio}
                   </p>
-                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                  <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
                     {currentProfile.interests.map((interest, idx) => (
                       <span
                         key={idx}
                         style={{
-                          padding: "6px 12px",
+                          padding: isMobile ? "4px 8px" : "6px 12px",
                           background: "rgba(255,255,255,0.2)",
                           borderRadius: "20px",
-                          fontSize: "14px",
+                          fontSize: isMobile ? "12px" : "14px",
                         }}
                       >
                         {interest}
@@ -181,27 +195,29 @@ export const Chat = () => {
                 style={{
                   display: "flex",
                   justifyContent: "center",
-                  gap: "20px",
-                  padding: "20px",
+                  gap: isMobile ? "16px" : "20px",
+                  padding: isMobile ? "16px" : "20px",
                   background: "white",
                 }}
               >
                 <button
                   onClick={() => handleSwipe("left")}
                   style={{
-                    width: "60px",
-                    height: "60px",
+                    width: isMobile ? "56px" : "60px",
+                    height: isMobile ? "56px" : "60px",
                     borderRadius: "50%",
                     border: "none",
                     background: "#ff6b6b",
                     color: "white",
-                    fontSize: "24px",
+                    fontSize: isMobile ? "20px" : "24px",
                     cursor: "pointer",
                     boxShadow: "0 4px 12px rgba(255,107,107,0.4)",
                     transition: "transform 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.1)";
+                    if (!isMobile) {
+                      e.currentTarget.style.transform = "scale(1.1)";
+                    }
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "scale(1)";
@@ -212,19 +228,21 @@ export const Chat = () => {
                 <button
                   onClick={() => handleSwipe("right")}
                   style={{
-                    width: "60px",
-                    height: "60px",
+                    width: isMobile ? "56px" : "60px",
+                    height: isMobile ? "56px" : "60px",
                     borderRadius: "50%",
                     border: "none",
                     background: "#4ecdc4",
                     color: "white",
-                    fontSize: "24px",
+                    fontSize: isMobile ? "20px" : "24px",
                     cursor: "pointer",
                     boxShadow: "0 4px 12px rgba(78,205,196,0.4)",
                     transition: "transform 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "scale(1.1)";
+                    if (!isMobile) {
+                      e.currentTarget.style.transform = "scale(1.1)";
+                    }
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "scale(1)";
@@ -246,9 +264,11 @@ export const Chat = () => {
             display: "flex",
             flexDirection: "column",
             background: "white",
-            borderRadius: "20px",
+            borderRadius: isMobile ? "0" : "20px",
             overflow: "hidden",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            boxShadow: isMobile ? "none" : "0 4px 12px rgba(0,0,0,0.1)",
+            height: isMobile ? "calc(100vh - 140px)" : "auto",
+            minHeight: isMobile ? "calc(100vh - 140px)" : "auto",
           }}
         >
           {/* 채팅 헤더 */}
@@ -300,7 +320,7 @@ export const Chat = () => {
             style={{
               flex: 1,
               overflowY: "auto",
-              padding: "20px",
+              padding: isMobile ? "12px" : "20px",
               background: "#f8f9fa",
             }}
           >
@@ -326,20 +346,20 @@ export const Chat = () => {
                 >
                   <div
                     style={{
-                      maxWidth: "70%",
-                      padding: "12px 16px",
+                      maxWidth: isMobile ? "85%" : "70%",
+                      padding: isMobile ? "10px 12px" : "12px 16px",
                       borderRadius: "18px",
                       background: message.isFromMe ? "#646cff" : "white",
                       color: message.isFromMe ? "white" : "#333",
                       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                     }}
                   >
-                    <p style={{ margin: 0, fontSize: "15px", lineHeight: "1.4" }}>
+                    <p style={{ margin: 0, fontSize: isMobile ? "14px" : "15px", lineHeight: "1.4" }}>
                       {message.text}
                     </p>
                     <span
                       style={{
-                        fontSize: "11px",
+                        fontSize: isMobile ? "10px" : "11px",
                         opacity: 0.7,
                         display: "block",
                         marginTop: "4px",
@@ -357,11 +377,11 @@ export const Chat = () => {
           {/* 입력 영역 */}
           <div
             style={{
-              padding: "20px",
+              padding: isMobile ? "12px" : "20px",
               background: "white",
               borderTop: "1px solid #e0e0e0",
               display: "flex",
-              gap: "10px",
+              gap: isMobile ? "8px" : "10px",
             }}
           >
             <input
@@ -372,10 +392,10 @@ export const Chat = () => {
               onKeyPress={handleKeyPress}
               style={{
                 flex: 1,
-                padding: "12px 16px",
+                padding: isMobile ? "10px 12px" : "12px 16px",
                 borderRadius: "24px",
                 border: "1px solid #e0e0e0",
-                fontSize: "15px",
+                fontSize: isMobile ? "14px" : "15px",
                 outline: "none",
               }}
             />
@@ -383,13 +403,13 @@ export const Chat = () => {
               onClick={handleSendMessage}
               disabled={!inputMessage.trim()}
               style={{
-                padding: "12px 24px",
+                padding: isMobile ? "10px 16px" : "12px 24px",
                 borderRadius: "24px",
                 border: "none",
                 background: inputMessage.trim() ? "#646cff" : "#ccc",
                 color: "white",
                 cursor: inputMessage.trim() ? "pointer" : "not-allowed",
-                fontSize: "15px",
+                fontSize: isMobile ? "14px" : "15px",
                 fontWeight: "bold",
               }}
             >
@@ -400,11 +420,13 @@ export const Chat = () => {
       ) : (
         <div
           style={{
-            width: "300px",
+            width: isMobile ? "100%" : "300px",
             background: "white",
-            borderLeft: "1px solid #e0e0e0",
-            padding: "20px",
+            borderLeft: isMobile ? "none" : "1px solid #e0e0e0",
+            borderTop: isMobile ? "1px solid #e0e0e0" : "none",
+            padding: isMobile ? "16px" : "20px",
             overflowY: "auto",
+            maxHeight: isMobile ? "300px" : "none",
           }}
         >
           <h3 style={{ marginTop: 0, marginBottom: "20px", fontSize: "18px", color: "#333" }}>

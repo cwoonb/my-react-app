@@ -12,6 +12,7 @@ function App() {
         style={{
           minHeight: "100vh",
           background: "#f5f5f5",
+          overflowX: "hidden",
         }}
       >
         <Navigation />
